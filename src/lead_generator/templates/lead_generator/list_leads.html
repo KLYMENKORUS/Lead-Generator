@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Список Маршрутов{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+           <div class="card shadow">
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th colspan="6">
+                                <h5 class="font-italic text-center">List of generated leads by parameters: {{ user.keyword }}, {{ user.location }}</h5>
+                            </th>
+                        </tr>
+                        <tr class="table-primary">
+                            <th>Name Lead</th>
+                            <th>Address Lead</th>
+                            <th>Phone number Lead</th>
+                            <th>Url Lead</th>
+                        </tr>
+                        </thead>
+
+                        {% for lead in all_leads %}
+                            <tr>
+                                <td>{{ lead.name }}</td>
+                                <td>{{ lead.address }}</td>
+                                <td>{{ lead.phone_number }}</td>
+                                <td>{{ lead.url }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+
+                <nav aria-label="Page navigation" class="d-flex justify-content-center">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            {% if page_obj.has_previous %}
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span></a>
+                            {% endif %}
+
+                        </li>
+                        {% for page in page_obj.paginator.page_range %}
+                            <li class="page-item {% if page == page_obj.number %}active{% endif %}">
+                                <a class="page-link " href="?page={{ page }}">{{ page }}</a>
+                            </li>
+                        {% endfor %}
+
+                        <li class="page-item">
+                            {% if page_obj.has_next %}
+                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                                <span aria-hidden="true">&raquo;</span>
+                            {% endif %}
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

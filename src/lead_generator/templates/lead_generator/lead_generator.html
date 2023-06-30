@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Lead Generator{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+
+        <div class="card shadow">
+                <div class="card-body">
+                <h5 class="card-text text-center font-italic">Update form User</h5>
+                    <form action="{% url 'users:update' user.pk %}" method="post">
+                        {% csrf_token %}
+                        {% for field in update_form %}
+                            <div class="fieldWrapper">
+                            {% if field.errors %}
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    {% for error in field.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endif %}
+                                {{ field.label_tag }} {{ field }}
+                                {% if field.help_text %}
+                                    <p class="help">{{ field.help_text|safe }}</p>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        <input class="btn btn-info mt-3" type="submit" value="Update">
+
+                    </form>
+                </div>
+            </div>
+
+            <div class="card shadow mt-4">
+                <div class="card-body">
+                <h5 class="card-text text-center font-italic">Lead Generator</h5>
+                    <form action="{% url 'lead_generator:leads' %}">
+                        {% if user.keyword and user.location %}
+                            <select class="form-select" aria-label="Default select example">
+                                <option selected>How many leads to generate</option>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                                <option value="40">40</option>
+                                <option value="50">50</option>
+                            </select>
+                            <input class="btn btn-info mt-3" type="submit" value="Submit">
+                        {% else %}
+                            <div>
+                                <h6 class="form-control-plaintext text-center">
+                                    Enter your keyword and location in the form above
+                                </h6>
+                            </div>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
